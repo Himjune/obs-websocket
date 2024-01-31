@@ -319,7 +319,6 @@ RequestResult RequestHandler::SaveSourceScreenshot(const Request &request)
 
 RequestResult RequestHandler::SendSourceInteractEvent(const Request &request)
 {
-	RequestStatus::RequestStatus statusCode;
 	std::string comment;
 	json responseData;
 	json responseDataPart;
