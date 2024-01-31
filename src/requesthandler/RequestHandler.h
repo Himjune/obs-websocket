@@ -76,6 +76,7 @@ private:
 	RequestResult GetSourceActive(const Request &);
 	RequestResult GetSourceScreenshot(const Request &);
 	RequestResult SaveSourceScreenshot(const Request &);
+	RequestResult SendSourceInteractEvent(const Request &);
 	RequestResult GetSourcePrivateSettings(const Request &);
 	RequestResult SetSourcePrivateSettings(const Request &);
 

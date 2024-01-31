@@ -317,6 +317,35 @@ RequestResult RequestHandler::SaveSourceScreenshot(const Request &request)
 	return RequestResult::Success();
 }
 
+RequestResult RequestHandler::SendSourceInteractEvent(const Request &request)
+{
+	RequestStatus::RequestStatus statusCode;
+	std::string comment;
+	json responseData;
+	json responseDataPart;
+
+	auto cb = [](void *param, obs_source_t *input) {
+		auto ke = static_cast<obs_key_event *>(param);
+		// Sanity check in case the API changes
+		if (obs_source_get_type(input) != OBS_SOURCE_TYPE_INPUT)
+			return true;
+
+		obs_source_send_key_click(input, ke, false);
+		return true;
+	};
+
+	obs_key_event ke;	
+	ke.modifiers = request.RequestData["keyMods"];
+	ke.native_vkey = request.RequestData["keyVCode"];
+
+	// Actually enumerates only public inputs, despite the name
+	obs_enum_sources(cb, &ke);
+	responseData["result"] = "SUCCESS";
+
+	return RequestResult::Success(responseData);
+}
+
+
 // Intentionally undocumented
 RequestResult RequestHandler::GetSourcePrivateSettings(const Request &request)
 {
